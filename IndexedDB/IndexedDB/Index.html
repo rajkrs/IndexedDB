@@ -1,0 +1,190 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+
+    <link href="Css/bootstrap.min.css" rel="stylesheet" />
+    <script src="Js/indexeddb.js"></script>
+
+    <script>
+
+        idb.init({
+            database: "Otest",
+            version: 1,
+            tables: [
+                {
+                    name: "Question",
+                    keyPath: "ID",
+                    autoIncrement: false
+                },
+                {
+                    name: "Test",
+                    keyPath: "ID",
+                    autoIncrement: true
+                }
+            ]
+        });
+
+        //insert
+        function addOneData() {
+
+            idb.insert("Question", { title: "Q1", marks: "3", ID: 1 });
+
+
+            /*
+                //Also support callback on success & error
+                idb.insert("Question", { title: "Q1", marks: "2", ID: 25 }, function (isInserted, responseText) {
+                console.log(isInserted);
+                console.log(responseText);
+                });
+            */
+
+        }
+
+        function addMultipleData() {
+
+            idb.insert("Question", [{ title: "Q2", marks: "3", ID: 2 }, { title: "Q3", marks: "3", ID: 3 }], function (isInserted, responseText) {
+                console.log(isInserted);
+                console.log(responseText);
+            });
+        }
+
+        //delete
+        function deleteOneData() {
+
+            var result = idb.delete("Question", 1, function (isDeleted, responseText) {
+                if (isDeleted) {
+                    console.log(responseText);
+                }
+                else {
+                    console.log("Error: " + responseText);
+                }
+            });
+
+        }
+
+        function deleteMultipleData() {
+
+            var result = idb.delete("Question", [2, 3], function (isDeleted, responseText) {
+                if (isDeleted) {
+                    console.log(responseText);
+                }
+                else {
+                    console.log("Error: " + responseText);
+                }
+            });
+
+        }
+
+        function deleteAllData() {
+
+            var result = idb.delete("Question", function (isDeleted, responseText) {
+                if (isDeleted) {
+                    console.log(responseText);
+                }
+                else {
+                    console.log("Error: " + responseText);
+                }
+            });
+        }
+
+        //fetch
+        function getOneData() {
+
+            var result = idb.select("Question", 1, function (isSelected, responseData) {
+                if (isSelected) {
+                    console.log(responseData);
+                }
+                else {
+                    console.log("Error: " + responseText);
+                }
+            });
+
+        }
+
+        function getMultipleData() {
+
+            var result = idb.select("Question", [2, 3], function (isSelected, responseData) {
+                if (isSelected) {
+                    console.log(responseData);
+                }
+                else {
+                    console.log("Error: " + responseText);
+                }
+            });
+
+        }
+
+        function getAllData() {
+
+            var result = idb.select("Question", function (isSelected, responseData) {
+                if (isSelected) {
+                    console.log(responseData);
+                }
+                else {
+                    console.log("Error: " + responseText);
+                }
+            });
+        }
+
+
+    </script>
+
+</head>
+<body>
+
+
+
+    <h1>Indexed DB Examples</h1>
+
+    <table>
+        <tr>
+
+            <td style="vertical-align:top">
+                <h4 class="panel-heading">Add/ Update</h4>
+
+                <div class="panel-body">
+                    <a href="#" onclick="addOneData()">Add one data in Question table</a>
+                    <br />
+                    <br />
+                    <a href="#" onclick="addMultipleData()">Add multiple data in Question table</a>
+                </div>
+            </td>
+
+
+            <td>
+                <h4 class="panel-heading">Delete</h4>
+
+                <div class="panel-body">
+                    <a href="#" onclick="deleteOneData()">Delete One Question Data</a>
+                    <br />
+                    <br />
+                    <a href="#" onclick="deleteMultipleData()">Delete Multiple Question Data</a>
+                    <br />
+                    <br />
+                    <a href="#" onclick="deleteAllData()">Delete All Question Data</a>
+                </div>
+            </td>
+
+            <td>
+                <h4 class="panel-heading">Select</h4>
+
+                <div class="panel-body">
+                    <a href="#" onclick="getOneData()">Get One Question Data</a>
+                    <br />
+                    <br />
+                    <a href="#" onclick="getMultipleData()">Get Multiple Question Data</a>
+                    <br />
+                    <br />
+                    <a href="#" onclick="getAllData()">Get All Question Data</a>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+
+   
+
+</body>
+</html>
