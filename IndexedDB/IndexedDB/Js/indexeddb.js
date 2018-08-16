@@ -44,8 +44,13 @@ idb = {
                 //create new tables
                 for (var i = 0; i < optionTables.length; i++) {
                     if (!resultDb.objectStoreNames.contains(optionTables[i].name)) {
-                        resultDb.createObjectStore(optionTables[i].name, { keyPath: optionTables[i].keyPath, autoIncrement: optionTables[i].autoIncrement });
+                        var objectStore = resultDb.createObjectStore(optionTables[i].name, { keyPath: optionTables[i].keyPath, autoIncrement: optionTables[i].autoIncrement });
                         console.log(optionTables[i].name + " Created.");
+                        if (optionTables[i].index != null && optionTables[i].index != 'undefined') {
+                            for (var idx = 0; idx < optionTables[i].index.length; idx++) {
+                                objectStore.createIndex(optionTables[i].index[idx].name, optionTables[i].index[idx].name, { unique: optionTables[i].index[idx].unique });
+                            }
+                        }
                     }
                 }
 
@@ -188,6 +193,11 @@ idb = {
             else if (key.constructor === Array) {
                 keyLength = key.length
                 request = store.getAll();
+            }
+            else if (key && typeof key === 'object' && key.constructor === Object) {
+                keyLength = 1
+                var index = store.index(key.key);
+                request = index.getAll(key.value);
             }
             else {
                 keyLength = 1;

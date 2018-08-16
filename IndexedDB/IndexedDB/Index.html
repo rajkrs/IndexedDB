@@ -16,7 +16,8 @@
                 {
                     name: "Question",
                     keyPath: "ID",
-                    autoIncrement: false
+                    autoIncrement: false,
+                    index: [{ name: "title", unique: false}]
                 },
                 {
                     name: "Test",
@@ -128,7 +129,18 @@
             });
         }
 
+        function getDataByIndex() {
 
+            var result = idb.select("Question", {key : "title", value: "Q1"}, function (isSelected, responseData) {
+                if (isSelected) {
+                    console.log(responseData);
+                }
+                else {
+                    console.log("Error: " + responseText);
+                }
+            });
+
+        }
     </script>
 
 </head>
@@ -178,6 +190,10 @@
                     <br />
                     <br />
                     <a href="#" onclick="getAllData()">Get All Question Data</a>
+                    <br />
+                    <br />
+                    <a href="#" onclick="getDataByIndex()">Get Question Data by Index</a>
+                    
                 </div>
             </td>
         </tr>
